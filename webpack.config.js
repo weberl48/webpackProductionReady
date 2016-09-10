@@ -38,6 +38,7 @@ switch (process.env.npm_lifecycle_event) {
             devtool: 'source-map',
             output: {
                 path: PATHS.build,
+                 publicPath: '/webpackProductionReady/',
                 filename: '[name].[chunkhash].js',
                 // This is used for require.ensure. The setup
                 // will work without but this is useful to set.
@@ -64,4 +65,8 @@ switch (process.env.npm_lifecycle_event) {
         }));
 }
 
-module.exports = validate(config);
+
+// Run validator in quiet mode to avoid output in stats
+module.exports = validate(config, {
+  quiet: true
+});
