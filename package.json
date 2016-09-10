@@ -13,7 +13,9 @@
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.10",
     "css-loader": "^0.25.0",
+    "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^2.22.0",
+    "purifycss-webpack-plugin": "^2.0.3",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.15.1",
@@ -21,6 +23,7 @@
     "webpack-validator": "^2.2.7"
   },
   "dependencies": {
-    "react": "^15.3.1"
-  }
+    "react": "^15.3.1",
+    "purecss": "^0.6.0"
+}
 }

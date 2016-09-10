@@ -5,8 +5,13 @@ const validate = require('webpack-validator');
 const parts = require('./libs/parts');
 
 const PATHS = {
-    app: path.join(__dirname, 'app'),
-    build: path.join(__dirname, 'build')
+  app: path.join(__dirname, 'app'),
+
+  style: [
+     path.join(__dirname, 'node_modules', 'purecss'),
+     path.join(__dirname, 'app', 'main.css')
+   ],
+  build: path.join(__dirname, 'build')
 };
 
 const common = {
@@ -14,6 +19,7 @@ const common = {
     // We'll be using the latter form given it's
     // convenient with more complex configurations.
     entry: {
+        style: PATHS.style,
         app: PATHS.app
     },
     output: {
@@ -37,12 +43,21 @@ switch (process.env.npm_lifecycle_event) {
                 // will work without but this is useful to set.
                 chunkFilename: '[chunkhash].js'
             }
-        }, parts.setFreeVariable('process.env.NODE_ENV', 'production'), parts.extractBundle({name: 'vendor', entries: ['react']}), parts.minify(), parts.setupCSS(PATHS.style), parts.clean(PATHS.build));
+        },
+        parts.setFreeVariable('process.env.NODE_ENV', 'production'),
+        parts.extractBundle({name: 'vendor', entries: ['react']}),
+        parts.minify(),
+        parts.clean(PATHS.build),
+        parts.extractCSS(PATHS.style),
+        parts.purifyCSS([PATHS.app])
+    );
         break;
     default:
         config = merge(common, {
             devtool: 'eval-source-map'
-        }, parts.setupCSS(PATHS.app), parts.devServer({
+        },
+        parts.setupCSS(PATHS.style),
+        parts.devServer({
             // Customize host/port here if needed
             host: process.env.HOST,
             port: process.env.PORT
